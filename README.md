@@ -9,7 +9,7 @@ Create an Agency Booking REST API.
 Requirements
 BACKEND:
 
-The Booking API would be a hotel booking service that allows you to list, create, update and delete a reservation.
+The Booking API would be a hotel bookingEntity service that allows you to list, create, update and delete a reservation.
 Basic error handing, logging.
 Create a README detailing instructions on how to run and call the API.
 Write appropriate unit and Integration tests

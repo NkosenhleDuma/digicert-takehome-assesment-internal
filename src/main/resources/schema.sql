@@ -1,18 +1,19 @@
-CREATE TABLE Bookings (
+CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     status VARCHAR(50) NOT NULL,
 
-    customerFirstName VARCHAR(255),
-    customerLastName VARCHAR(255),
-    customerEmail VARCHAR(255),
+    customer_email VARCHAR(255),
 
-    numAdults INT,
-    numChildren INT,
+    num_adults INT,
+    num_children INT,
 
-    startDate DATE,
-    endDate DATE,
+    start_date DATE,
+    end_date DATE,
 
-    numBeds INT,
+    num_beds INT,
 
-    notes TEXT
+    notes TEXT,
+
+    create_date DATE DEFAULT CURRENT_TIMESTAMP,
+    modified_date DATE DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

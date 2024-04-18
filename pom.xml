@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.digicert</groupId>
-	<artifactId>booking</artifactId>
+	<artifactId>bookingEntity</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>booking-takehome</name>
+	<name>bookingEntity-takehome</name>
 	<description>Booking Application - Takehome Asseessment</description>
 	<properties>
 		<java.version>17</java.version>
@@ -49,8 +49,15 @@
 			<artifactId>jakarta.ws.rs-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.16.1</version>
+		</dependency>
 
-        <dependency>
+
+		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
