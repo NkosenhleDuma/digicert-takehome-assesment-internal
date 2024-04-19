@@ -13,16 +13,26 @@ import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
+@Service
 @Path("/bookings")
 public class BookingService {
     private static final Logger log = LoggerFactory.getLogger(BookingService.class);
+
     @Autowired
     BookingRepository bookingRepository;
 
+    @GET
+    @Path("/hello")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response hello() {
+        log.info("Hello");
+        return Response.ok("Hello from Spring!").build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -82,7 +92,7 @@ public class BookingService {
                     .build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("We've run into an issue. Failed to get bookings").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("We've run into an issue. Failed to delete booking").build();
         }
     }
 
@@ -93,19 +103,17 @@ public class BookingService {
         log.info("Creating booking, {}", createBookingDTO.toString());
         try {
             BookingEntity bookingEntity = new BookingEntity();
-
-            bookingEntity.setId(createBookingDTO.getId());
-            bookingEntity.setStatus(BookingEntity.BookingStatus.PENDING); // Created as PENDING
             bookingEntity.setCustomerEmail(createBookingDTO.getCustomerEmail());
 
             bookingEntity.setNumAdults(createBookingDTO.getNumAdults());
             bookingEntity.setNumChildren(createBookingDTO.getNumChildren());
             bookingEntity.setNumBeds(createBookingDTO.getNumBeds());
-
-            bookingEntity.setStartDate(createBookingDTO.getStartDate());
-            bookingEntity.setEndDate(createBookingDTO.getEndDate());
+            bookingEntity.setCheckInDate(createBookingDTO.getCheckInDate());
+            bookingEntity.setCheckOutDate(createBookingDTO.getCheckOutDate());
 
             bookingEntity.setNotes(createBookingDTO.getNotes());
+
+            bookingEntity.setStatus(BookingEntity.BookingStatus.PENDING); // Created as PENDING
 
             BookingEntity savedBookingEntity = bookingRepository.save(bookingEntity);
 
@@ -123,7 +131,7 @@ public class BookingService {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatedBooking(@PathParam("id") Long id, @Valid UpdateBookingDTO updateBookingDTO) {
+    public Response updateBooking(@PathParam("id") Long id, @Valid UpdateBookingDTO updateBookingDTO) {
         log.info("Updating booking, {}", updateBookingDTO.toString());
         try {
             BookingEntity bookingEntity = bookingRepository
@@ -135,9 +143,13 @@ public class BookingService {
             bookingEntity.setNumAdults(updateBookingDTO.getNumAdults());
             bookingEntity.setNumChildren(updateBookingDTO.getNumChildren());
             bookingEntity.setNumBeds(updateBookingDTO.getNumBeds());
-            bookingEntity.setStartDate(updateBookingDTO.getStartDate());
-            bookingEntity.setEndDate(updateBookingDTO.getEndDate());
+            bookingEntity.setCheckInDate(updateBookingDTO.getCheckInDate());
+            bookingEntity.setCheckOutDate(updateBookingDTO.getCheckOutDate());
             bookingEntity.setNotes(updateBookingDTO.getNotes());
+
+            if (!bookingEntity.getStatus().equals(BookingEntity.BookingStatus.PENDING)) {
+                throw new BadRequestException("Booking status is not PENDING");
+            }
 
             BookingEntity savedBookingEntity = bookingRepository.save(bookingEntity);
             return Response.ok(entityToDTO(savedBookingEntity)).build();
@@ -145,7 +157,12 @@ public class BookingService {
             log.error(e.getMessage());
             return Response
                     .status(Response.Status.NOT_FOUND)
-                    .entity("We've run into an issue. Failed update the booking")
+                    .entity("We've run into an issue. Booking not found")
+                    .build();
+        } catch (BadRequestException e) {
+            log.error(e.getMessage());
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
                     .build();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -168,8 +185,8 @@ public class BookingService {
         bookingDTO.setNumChildren(bookingEntity.getNumChildren());
         bookingDTO.setNumBeds(bookingEntity.getNumBeds());
 
-        bookingDTO.setStartDate(bookingEntity.getStartDate());
-        bookingDTO.setEndDate(bookingEntity.getEndDate());
+        bookingDTO.setCheckInDate(bookingEntity.getCheckInDate());
+        bookingDTO.setCheckOutDate(bookingEntity.getCheckOutDate());
         bookingDTO.setNotes(bookingEntity.getNotes());
 
         bookingDTO.setCreateDate(bookingEntity.getCreateDate());

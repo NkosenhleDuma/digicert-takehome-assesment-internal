@@ -7,8 +7,8 @@ CREATE TABLE bookings (
     num_adults INT,
     num_children INT,
 
-    start_date DATE,
-    end_date DATE,
+    check_in_date DATE,
+    check_out_date DATE,
 
     num_beds INT,
 

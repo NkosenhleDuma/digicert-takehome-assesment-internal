@@ -24,8 +24,8 @@ public class BookingEntity {
     private String customerEmail;
     private int numAdults;
     private int numChildren;
-    private Date startDate;
-    private Date endDate;
+    private Date checkInDate;
+    private Date checkOutDate;
     private int numBeds;
     private String notes;
 
@@ -36,8 +36,9 @@ public class BookingEntity {
 
     public enum BookingStatus {
         PENDING("pending"),
-        ACCEPTED("accepted"),
+        ACCEPTED("completed"),
         CANCELLED("cancelled");
+        // TODO: Add payment statuses
 
         private final String bookingStatus;
 
