@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.digicert</groupId>
-	<artifactId>bookingEntity</artifactId>
+	<artifactId>digicert-booking-takehome</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bookingEntity-takehome</name>
+	<name>digicert-booking-takehome</name>
 	<description>Booking Application - Takehome Asseessment</description>
 	<properties>
 		<java.version>17</java.version>
